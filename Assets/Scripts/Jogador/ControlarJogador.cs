@@ -23,6 +23,13 @@ public class ControlarJogador : MonoBehaviour
     }
 
     void FixedUpdate() {        
-        GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + (direcao* Velocidade * Time.deltaTime));        
+        GetComponent<Rigidbody>().MovePosition
+        (GetComponent<Rigidbody>().position +
+        (direcao* Velocidade * Time.deltaTime));      
+        
+        Ray raio = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(raio.origin, raio.direction, Color.red);
+
+        Debug.Log(raio);
     }
 }
