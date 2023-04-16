@@ -18,20 +18,29 @@ public class ControlarZumbie : MonoBehaviour
         
     }
 
-    void FixedUpdate() {       
+    void FixedUpdate() {     
             if(!(Jogador == null))   
-            {
-                float distancia = Vector3.Distance(transform.position, Jogador.transform.position);  
-                if(distancia > 2.9){
-                    Vector3 direcao = Jogador.transform.position - transform.position; 
-                            GetComponent<Rigidbody>().MovePosition(
-                                GetComponent<Rigidbody>().position + 
-                    direcao.normalized * Velocidade*Time.deltaTime);  
+            {             
+                float distancia = Vector3.Distance(transform.position, Jogador.transform.position); 
+                Vector3 direcao = Jogador.transform.position - transform.position;  
+                Quaternion novaRotacao = Quaternion.LookRotation(direcao);
+                GetComponent<Rigidbody>().MoveRotation(novaRotacao);      
+                if(distancia > 2.9){                   
+                    GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + direcao.normalized * Velocidade*Time.deltaTime);      
+                    GetComponent<Animator>().SetBool("Atacando",false);
+                } else{
+                    GetComponent<Animator>().SetBool("Atacando",true);
+                }
+            }                 
+    }
 
-                    Quaternion novaRotacao = Quaternion.LookRotation(direcao);
-                    GetComponent<Rigidbody>().MoveRotation(novaRotacao);
-                } 
-            }      
-             
+
+    void AtacaJogador(){
+        if(!(Jogador == null))   
+        {  
+            Time.timeScale = 0;
+            Jogador.GetComponent<ControlarJogador>().TextoGameOver.SetActive(true);
+            Jogador.GetComponent<ControlarJogador>().Vivo = false;
+        }
     }
 }
