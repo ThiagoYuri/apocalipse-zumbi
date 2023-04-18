@@ -9,7 +9,9 @@ public class ControlarZumbie : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Jogador = GameObject.FindWithTag("Jogador");    
+        int geraTipoZumbie = Random.Range(1,28);
+        transform.GetChild(geraTipoZumbie).gameObject.SetActive(true);
     }
 
     // Update is called once per frame
