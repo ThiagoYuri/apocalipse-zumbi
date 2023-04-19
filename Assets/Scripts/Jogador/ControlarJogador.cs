@@ -6,12 +6,15 @@ using UnityEngine.SceneManagement;
 public class ControlarJogador : MonoBehaviour
 {
     public float Velocidade = 10;
-    Vector3 direcao;
     public LayerMask MascaraChao;
     public GameObject TextoGameOver;
     public bool Vivo = true;
-
+    private Rigidbody jogador;
+    private Animator animator;
+    private Vector3 direcao;
     void Start(){
+        jogador = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
         Time.timeScale = 1;
         Vivo  = true;
     }
@@ -25,9 +28,9 @@ public class ControlarJogador : MonoBehaviour
         direcao = new Vector3(eixoX,0,eixoZ);
 
         if(direcao !=  Vector3.zero){
-            GetComponent<Animator>().SetBool("Movendo",true);
+            animator.SetBool("Movendo",true);
         }else{
-            GetComponent<Animator>().SetBool("Movendo",false);
+            animator.SetBool("Movendo",false);
         }
 
         if(Vivo == false){
@@ -38,8 +41,8 @@ public class ControlarJogador : MonoBehaviour
     }
 
     void FixedUpdate() {        
-        GetComponent<Rigidbody>().MovePosition
-        (GetComponent<Rigidbody>().position +
+       jogador.MovePosition
+        (jogador.position +
         (direcao* Velocidade * Time.deltaTime));      
         
         Ray raio = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -54,7 +57,7 @@ public class ControlarJogador : MonoBehaviour
 
             Quaternion novaRotacao = Quaternion.LookRotation(posicaoMiraJogador);
 
-            GetComponent<Rigidbody>().MoveRotation(novaRotacao);
+            jogador.MoveRotation(novaRotacao);
         }
     }
 }

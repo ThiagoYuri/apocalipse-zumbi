@@ -5,13 +5,18 @@ using UnityEngine;
 public class ControlarZumbie : MonoBehaviour
 {
     public GameObject Jogador;
-    public float Velocidade = 5;
+    public float Velocidade = 1;
+    private Animator animator;
+    private Rigidbody rigidbodyZumbie;
+
     // Start is called before the first frame update
     void Start()
     {
         Jogador = GameObject.FindWithTag("Jogador");    
         int geraTipoZumbie = Random.Range(1,28);
         transform.GetChild(geraTipoZumbie).gameObject.SetActive(true);
+        rigidbodyZumbie = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -26,12 +31,12 @@ public class ControlarZumbie : MonoBehaviour
                 float distancia = Vector3.Distance(transform.position, Jogador.transform.position); 
                 Vector3 direcao = Jogador.transform.position - transform.position;  
                 Quaternion novaRotacao = Quaternion.LookRotation(direcao);
-                GetComponent<Rigidbody>().MoveRotation(novaRotacao);      
+                rigidbodyZumbie.MoveRotation(novaRotacao);      
                 if(distancia > 2.9){                   
-                    GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + direcao.normalized * Velocidade*Time.deltaTime);      
-                    GetComponent<Animator>().SetBool("Atacando",false);
+                    rigidbodyZumbie.MovePosition(rigidbodyZumbie.position + direcao.normalized * Velocidade*Time.deltaTime);      
+                    animator.SetBool("Atacando",false);
                 } else{
-                    GetComponent<Animator>().SetBool("Atacando",true);
+                    animator.SetBool("Atacando",true);
                 }
             }                 
     }
